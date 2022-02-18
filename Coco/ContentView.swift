@@ -16,11 +16,6 @@ func getTime() -> String {
     return dateString
 }
 
-func getDate() -> String {
-    
-    return "Hello"
-}
-
 func getStatus(currentHour: String) -> String {
     if currentHour.suffix(2) == "AM" {
         return "Good morning, "
@@ -40,10 +35,10 @@ struct ContentView: View {
                 .offset(x: 0, y: -490)
                 .foregroundColor(.black)
                 .overlay(
-                    Text(String(getStatus(currentHour: currentTime)) + "Mat")
+                    Text(String(getStatus(currentHour: currentTime)) + "Jacob")
                         .bold()
                         .font(Font.system(size: 19, design: .rounded))
-                        .offset(x: -120, y: -270)
+                        .offset(x: -113, y: -270)
                         .foregroundColor(.white)
                 )
             Text(String(getTime()))
@@ -74,6 +69,7 @@ struct ContentView: View {
                 .offset(x: -90, y: -720)
                 .font(Font.system(size: 16, design: .rounded))
                 .foregroundColor(.white)
+
             }
         }
     }
