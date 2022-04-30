@@ -1,2 +1,4 @@
-# Coco
-A simple and easy-to-use productivity app coded using the SwiftUI Library 
+<p align="center">
+  <img src="https://i.imgur.com/j1NSb9V.png">
+</p>
+<hr>
