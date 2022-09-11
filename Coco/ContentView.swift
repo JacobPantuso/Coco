@@ -1,82 +1,99 @@
 //
-//  ContentView.swift
+//  WelcomeScreeen.swift
 //  Coco
 //
-//  Created by Jacob Pantuso on 2022-02-14.
+//  Created by Jacob Pantuso on 2022-05-03.
 //
 
 import SwiftUI
+import AuthenticationServices
 
-func getTime() -> String {
-    let formatter = DateFormatter()
-    
-    formatter.timeStyle = .short
-    
-    let dateString = formatter.string(from: Date())
-    return dateString
+struct SignUpButton: View {
+    var body: some View {
+        Text("Sign Up").bold()
+            .padding()
+            .foregroundColor(.white)
+            .background(RoundedRectangle(cornerRadius: 20).fill(LinearGradient(colors: [Color(hex: 0xB8143B),Color(hex: 0xEC5273)], startPoint: .leading, endPoint: .trailing))
+                .frame(width: 120, height: 42, alignment: .center))
+    }
 }
 
-func getStatus(currentHour: String) -> String {
-    if currentHour.suffix(2) == "AM" {
-        return "Good morning, "
+struct LogInButton: View {
+    var body: some View {
+        Text("Log In").bold()
+            .padding()
+            .foregroundColor(.white)
+            .background(RoundedRectangle(cornerRadius: 20).fill(LinearGradient(colors: [Color(hex: 0xB8143B),Color(hex: 0xEC5273)], startPoint: .leading, endPoint: .trailing))
+            .frame(width: 120, height: 42, alignment: .center))
     }
-    if Int(currentHour.prefix(1))! >= 4 || Int(currentHour.prefix(1))! <= 9 && currentHour.suffix(2) == "PM" {
-        return "Good evening, "
-    }
-    return "NULL"
 }
 
 struct ContentView: View {
+    
+    init(){
+        UINavigationBar.setAnimationsEnabled(true)
+    }
+    
+    @State var isClicked: Bool = false
+    @State private var animateGradient = false
+    @State var fda: String = ""
+    @State var isSignedIn: Bool = false
+    
     var body: some View {
-        let currentTime = getTime()
-        VStack {
-            Rectangle()
-                .ignoresSafeArea()
-                .offset(x: 0, y: -490)
-                .foregroundColor(.black)
-                .overlay(
-                    Text(String(getStatus(currentHour: currentTime)) + "Jacob")
-                        .bold()
-                        .font(Font.system(size: 19, design: .rounded))
-                        .offset(x: -113, y: -270)
-                        .foregroundColor(.white)
-                )
-            Text(String(getTime()))
-                .bold()
-                .font(Font.system(size: 30, design: .rounded))
-                .offset(x: -144, y: -680)
-                .foregroundColor(.white)
-            Text("🌡")
-                .font(Font.system(size: 25, design: .rounded))
-                .offset(x: -188, y: -590)
-            Text("-16ºC in Toronto ")
-                .bold()
-                .font(Font.system(size: 16, design: .rounded))
-                .offset(x: -98, y: -613)
-                .foregroundColor(.white)
-            Image("calendar-icon")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: 30, height: 20, alignment: .top)
-                .offset(x: -190, y: -690)
-            Image("coco-white")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: 170, height: 0, alignment: .top)
-                .offset(x: 110, y: -800)
-            Text(Date(), style: .date)
-                .bold()
-                .offset(x: -90, y: -720)
-                .font(Font.system(size: 16, design: .rounded))
-                .foregroundColor(.white)
+        NavigationView {
+            if isSignedIn == false {
+                    ZStack {
+                        LinearGradient(colors: [.pink, .purple], startPoint: animateGradient ? .topLeading : .bottomLeading, endPoint: animateGradient ? .bottomTrailing : .topTrailing)
+                            .ignoresSafeArea()
+                            .onAppear {
+                                withAnimation(.linear(duration: 2.0).repeatForever(autoreverses: true)) {
+                                    animateGradient.toggle()
+                                }
+                            }
+                        VStack() {
+                            Spacer()
+                            Image("coconewbg")
+                                .resizable()
+                                .frame(width: 350, height: 350, alignment: .center)
+                            Spacer()
+                            (Text(Image(systemName: "applelogo")) + Text("  Continue with Apple"))
+                                .foregroundColor(.white)
+                                .background(RoundedRectangle(cornerRadius: 20)
+                                    .frame(width: 233, height: 42, alignment: .center))
+                                    .foregroundColor(.black)
 
+                            (Text(Image(systemName: "g.circle.fill"))
+                             + Text("   Continue with Google"))
+                                .padding()
+                                .foregroundColor(.white)
+                                .background(RoundedRectangle(cornerRadius: 20)
+                                    .frame(width: 233, height: 42, alignment: .center)
+                                    .foregroundColor(.black))
+                            Text("⎯⎯ OR ⎯⎯")
+                                .bold()
+                            HStack {
+                                NavigationLink(destination: LogInView(), label: {LogInButton()})
+                                Spacer()
+                                    .frame(minWidth: 10, idealWidth: 50)
+                                    .fixedSize()
+                                NavigationLink(destination: SignUpView(), label: {SignUpButton()})
+                    
+                            }
+                        }
+                    }
+            }
+            else {
+                ContentView()
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
+}
 
 
-struct ContentView_Previews: PreviewProvider {
+struct WelcomeScreeen_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            .environment(\.colorScheme, .dark)
     }
 }
